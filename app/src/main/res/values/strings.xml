@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CaseStudy-Contacts</string>
+    <string name="contacts">Contacts</string>
+    <string name="search_by_name">Search by name</string>
+    <string name="no_contacts">No Contacts</string>
+    <string name="contacts_you_ve_added_will_appear_here">Contacts you\'ve added will appear here.</string>
+    <string name="create_new_contact">Create New Contact</string>
+    <string name="gallery">Gallery</string>
+</resources>
