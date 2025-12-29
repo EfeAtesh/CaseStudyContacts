@@ -38,7 +38,7 @@ Teknoloji
 
 Açıklama
 
-Dil
+Dil (strings.xml sayesinde gelecekte eklenebilecek diller için iş kolaylaştırıldı)
 
 Kotlin
 
