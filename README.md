@@ -2,7 +2,7 @@
 
 Merhabalarr! Bu proje, modern Android geliştirme pratikleri kullanılarak hazırlanmış, hem yerel veritabanı (Room) hem de uzak sunucu (Swagger API) ile tam senkronize çalışan gelişmiş bir rehber yönetim uygulamasıdır.
 
-Bu uygulamayı geliştirirken sadece "çalışmasına" değil, kodun okunabilir, sürdürülebilir ve esnek olmasına odaklandım.
+Bu uygulamayı geliştirirken kodun okunabilir, sürdürülebilir ve esnek olmasına da odaklandım.
 
 ✨ Öne Çıkan Özellikler
 
