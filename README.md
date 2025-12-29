@@ -1,8 +1,8 @@
 📱 Nexoft Case Study: Contacts App
 
-Merhaba! Bu proje, modern Android geliştirme pratikleri kullanılarak hazırlanmış, hem yerel veritabanı (Room) hem de uzak sunucu (Swagger API) ile tam senkronize çalışan gelişmiş bir rehber yönetim uygulamasıdır.
+Merhabalarr! Bu proje, modern Android geliştirme pratikleri kullanılarak hazırlanmış, hem yerel veritabanı (Room) hem de uzak sunucu (Swagger API) ile tam senkronize çalışan gelişmiş bir rehber yönetim uygulamasıdır.
 
-Bu uygulamayı geliştirirken sadece "çalışmasına" değil, kodun okunabilir, sürdürülebilir ve esnek olmasına (SOLID, DRY, KISS) odaklandım.
+Bu uygulamayı geliştirirken sadece "çalışmasına" değil, kodun okunabilir, sürdürülebilir ve esnek olmasına odaklandım.
 
 ✨ Öne Çıkan Özellikler
 
@@ -28,7 +28,7 @@ Akıllı Arama: Yazmaya başladığınız anda çalışan filtreleme, geçmiş a
 
 Cihaz Entegrasyonu: Uygulama içindeki bir kişiyi, çalışma zamanı izinlerini (Runtime Permissions) yöneterek doğrudan telefonunuzun kendi rehberine kaydetme yeteneği.
 
-🛠️ Teknik Yığın (Tech Stack)
+🛠️ Teknik Yığın (Tech Stack):::
 
 Uygulamanın mimarisi, Android ekosisteminin en güncel kütüphaneleri üzerine inşa edilmiştir:
 
@@ -80,12 +80,9 @@ Lottie Compose
 
 Vektörel tabanlı yüksek kaliteli animasyonlar.
 
-DI
 
-Dagger Hilt
-
-Bağımlılıkların kolay yönetimi ve test edilebilirlik.
 📖 Uygulama Akışı
+
 
 Başlangıç: Uygulama açıldığında sunucudaki verilerle yerel veritabanı senkronize edilir.
 
