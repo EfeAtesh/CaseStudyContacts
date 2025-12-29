@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.SystemClock
 import android.provider.ContactsContract
 import android.view.View
 import android.widget.Toast
@@ -62,6 +61,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -95,8 +95,6 @@ class MainActivity : ComponentActivity() {
                 android.graphics.Color.TRANSPARENT,
                 android.graphics.Color.TRANSPARENT
             )
-
-
         )
 
         val logging = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
@@ -108,14 +106,12 @@ class MainActivity : ComponentActivity() {
             .build()
         val userApi = retrofit.create(UserApi::class.java)
 
-
-
-
         setContent {
             CaseStudyContactsTheme {
                 val context = LocalContext.current
                 val database = remember { ContactDatabase.getDatabase(context) }
                 val contactDao = database.contactDao()
+                val searchHistoryDao = database.searchHistoryDao()
                 val scope = rememberCoroutineScope()
 
                 var showAddSheet by remember { mutableStateOf(false) }
@@ -124,6 +120,7 @@ class MainActivity : ComponentActivity() {
                 var contactToDelete by remember { mutableStateOf<Contact?>(null) }
 
                 val contacts by contactDao.getAllContacts().collectAsState(initial = emptyList())
+                val searchHistory by searchHistoryDao.getAllSearchHistory().collectAsState(initial = emptyList())
 
                 LaunchedEffect(Unit) {
                     try {
@@ -155,10 +152,17 @@ class MainActivity : ComponentActivity() {
                 ) {
                     ContactsScreen(
                         contacts = contacts,
+                        searchHistory = searchHistory,
                         onAddClick = { showAddSheet = true },
                         onContactClick = { contactToView = it },
                         onEditClick = { contactToEdit = it },
-                        onDeleteClick = { contactToDelete = it }
+                        onDeleteClick = { contactToDelete = it },
+                        onSaveSearch = { query ->
+                            scope.launch { searchHistoryDao.insertSearchQuery(SearchHistory(query)) }
+                        },
+                        onClearHistory = {
+                            scope.launch { searchHistoryDao.deleteAllSearchHistory() }
+                        }
                     )
                 }
 
@@ -272,14 +276,16 @@ fun DeleteConfirmationSheet(onDismiss: () -> Unit, onConfirm: () -> Unit) {
 @Composable
 fun ContactsScreen(
     contacts: List<Contact>,
+    searchHistory: List<SearchHistory>,
     onAddClick: () -> Unit,
     onContactClick: (Contact) -> Unit,
     onEditClick: (Contact) -> Unit,
-    onDeleteClick: (Contact) -> Unit
+    onDeleteClick: (Contact) -> Unit,
+    onSaveSearch: (String) -> Unit,
+    onClearHistory: () -> Unit
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var isSearchFocused by remember { mutableStateOf(false) }
-    var searchHistory by remember { mutableStateOf(listOf("Adam", "Jessica", "Tim")) }
 
     val filteredContacts = if (searchQuery.isEmpty()) {
         emptyList()
@@ -361,7 +367,10 @@ fun ContactsScreen(
                         textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, color = Color(0xFF202020)),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                        keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() })
+                        keyboardActions = KeyboardActions(onSearch = { 
+                            if (searchQuery.isNotBlank()) onSaveSearch(searchQuery)
+                            focusManager.clearFocus() 
+                        })
                     )
                 }
 
@@ -399,7 +408,7 @@ fun ContactsScreen(
                         style = MaterialTheme.typography.bodyMedium,
                         color = BluePlatte,
                         fontWeight = FontWeight.Medium,
-                        modifier = Modifier.clickable { searchHistory = emptyList() }
+                        modifier = Modifier.clickable { onClearHistory() }
                     )
                 }
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -408,12 +417,12 @@ fun ContactsScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 12.dp)
-                                .clickable { searchQuery = historyItem },
+                                .clickable { searchQuery = historyItem.query },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(text = "✕", color = Color(0xFFB0B0B0), fontSize = 12.sp)
                             Spacer(Modifier.width(12.dp))
-                            Text(text = historyItem, color = Color(0xFF6D6D6D), fontSize = 14.sp)
+                            Text(text = historyItem.query, color = Color(0xFF6D6D6D), fontSize = 14.sp)
                         }
                         HorizontalDivider(color = Color(0xFFF6F6F6))
                     }
@@ -462,8 +471,14 @@ fun ContactsScreen(
                         items(filteredContacts) { contact ->
                             SwipeContactItem(
                                 contact = contact,
-                                onContactClick = { onContactClick(contact) },
-                                onEdit = { onEditClick(contact) },
+                                onContactClick = { 
+                                    onSaveSearch(searchQuery)
+                                    onContactClick(contact) 
+                                },
+                                onEdit = { 
+                                    onSaveSearch(searchQuery)
+                                    onEditClick(contact) 
+                                },
                                 onDelete = { onDeleteClick(contact) }
                             )
                         }
