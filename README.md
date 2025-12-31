@@ -28,58 +28,6 @@ Akıllı Arama: Yazmaya başladığınız anda çalışan filtreleme, geçmiş a
 
 Cihaz Entegrasyonu: Uygulama içindeki bir kişiyi, çalışma zamanı izinlerini (Runtime Permissions) yöneterek doğrudan telefonunuzun kendi rehberine kaydetme yeteneği.
 
-Teknik Yığın (Tech Stack):::
-
-Uygulamanın mimarisi, Android ekosisteminin en güncel kütüphaneleri üzerine inşa edilmiştir:
-
-Katman
-
-Teknoloji
-
-Açıklama
-
-Dil (strings.xml sayesinde gelecekte eklenebilecek diller için iş kolaylaştırıldı)
-
-Kotlin
-
-Modern ve güvenli programlama dili.
-
-UI
-
-Jetpack Compose
-
-Deklaratif ve modern arayüz tasarımı.
-
-Mimari
-
-Clean Architecture
-
-UI, Domain ve Data katmanlarının ayrıştırılması.
-
-Veritabanı
-
-Room
-
-SQLite tabanlı güçlü yerel depolama.
-
-Networking
-
-Retrofit + OkHttp
-
-Tip güvenli HTTP istemcisi ve API yönetimi.
-
-Resim İşleme
-
-Coil + Palette API
-
-Resim yükleme ve dinamik renk analizi.
-
-Animasyon
-
-Lottie Compose
-
-Vektörel tabanlı yüksek kaliteli animasyonlar.
-
 
 Uygulama Akışı
 
