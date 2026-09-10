@@ -15,7 +15,7 @@ swipebox = "1.4.0"
 palette = "1.0.0"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
-gson = "2.11.0"
+gson = "2.14.0"
 coil = "2.7.0"
 
 [libraries]
